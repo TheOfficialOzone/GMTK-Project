@@ -9,6 +9,13 @@
 
 //The Line Shape
 struct Line {
+	Line(float x1, float y1, float x2, float y2) {
+		point1.x = x1;
+		point1.y = y1;
+		point2.x = x2;
+		point2.y = y2;
+	}
+
 	SDL_FPoint point1;
 	SDL_FPoint point2;
 };
@@ -22,9 +29,22 @@ private:
 
 	bool fill;	//If it is filled or not
 public:
-	//Constructor 
+	//Constructor enter the values you want
+	ShapeRenderer(SDL_Renderer* newRenderer, SDL_Color newColour) {
+		setRenderer(newRenderer);
+		setColour(newColour);
+	}
+
+	//Defaults the Color to white
 	ShapeRenderer(SDL_Renderer* newRenderer) {
-		renderer = newRenderer;
+		setRenderer(newRenderer);
+
+		SDL_Color newColour;
+		newColour.r = 255;
+		newColour.g = 255;
+		newColour.b = 255;
+		newColour.a = SDL_ALPHA_OPAQUE;
+		setColour(newColour);
 	}
 
 	///	Shape Conversion
@@ -74,6 +94,9 @@ public:
 		SDL_RenderDrawLinesF(renderer, linesToPoints(drawLines, amount), amount + 1);
 	}
 
+	//Point
+	void renderPoint(SDL_FPoint* drawPoint) { SDL_RenderDrawPointF(renderer, drawPoint->x, drawPoint->y); }
+	void renderPoints(SDL_FPoint* drawPoints, int amount) { SDL_RenderDrawPointsF(renderer, drawPoints, amount); }
 
 };
 
