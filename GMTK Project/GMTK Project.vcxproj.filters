@@ -23,5 +23,8 @@
     <ClInclude Include="Rendering\ShapeRenderer\ShapeRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\GraphicRenderer\GraphicRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
