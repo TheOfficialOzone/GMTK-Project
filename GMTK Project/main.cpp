@@ -33,12 +33,20 @@ int main() {
 	SDL_FRect* testRect = new SDL_FRect();
 	testRect->x = 10;
 	testRect->y = 10;
-	testRect->w = 400;
-	testRect->h = 400;
+	testRect->w = 200;
+	testRect->h = 200;
+
+	SDL_FRect* testRect2 = new SDL_FRect();
+	testRect2->x = 300;
+	testRect2->y = 10;
+	testRect2->w = 200;
+	testRect2->h = 200;
+
 
 	while (1) {
 		SDL_PumpEvents();
-		graphicRenderer->renderTexture(testTexture, testRect);
+		graphicRenderer->renderTextureWithAngle(testTexture, testRect2, 180);
+		graphicRenderer->renderTextureWithFlip(testTexture, testRect, SDL_FLIP_NONE);
 		SDL_RenderPresent(myRenderer);
 	}
 	

@@ -70,6 +70,28 @@ public:
 	void renderTexture(SDL_Texture* texture, SDL_FRect* renderRect) {
 		SDL_RenderCopyF(renderer, texture, NULL, renderRect);	//Renders the image
 	}
+
+	//Renders the Texture With an Angle
+	//	Angle is in degrees!
+	void renderTextureWithAngle(SDL_Texture* texture, SDL_FRect* renderRect, double angle) {
+		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, NULL, SDL_FLIP_NONE); 
+	}
+
+	//Renders the Texture with an Angle about an Axis
+	void renderTextureWithAngleAroundAxis(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture) {
+		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, pointOnTexture, SDL_FLIP_NONE);
+	}
+
+	//Renders the Texture with a Flip applied
+	void renderTextureWithFlip(SDL_Texture* texture, SDL_FRect* renderRect, SDL_RendererFlip flipType) {
+		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, 0, NULL, flipType);
+	}
+
+	//With all commands
+	void renderTextureEx(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture, SDL_RendererFlip flipType) {
+		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, pointOnTexture, flipType);
+	}
+
 };
 
 
