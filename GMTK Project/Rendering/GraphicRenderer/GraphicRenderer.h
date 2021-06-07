@@ -15,20 +15,15 @@
 
 class GraphicRenderer {
 private:
-	SDL_Renderer* renderer;	//What renderer we are refering to
+	static SDL_Renderer* renderer;	//What renderer we are refering to
 
 public:
-	//Constructor
-	GraphicRenderer(SDL_Renderer* newRenderer) {
-		setRenderer(newRenderer);
-	}
-
 	//Renderer
-	void setRenderer(SDL_Renderer* newRenderer) { renderer = newRenderer; }
-	SDL_Renderer* getRenderer() { return renderer; }
+	static void setRenderer(SDL_Renderer* newRenderer) { renderer = newRenderer; }
+	static SDL_Renderer* getRenderer() { return renderer; }
 
 	//Returns 1 on success, -1 if image failed to load
-	int loadImageToSurface(SDL_Surface*& surface, std::string imageName) {	//These need to use pointer references cause SDL
+	static int loadImageToSurface(SDL_Surface*& surface, std::string imageName) {	//These need to use pointer references cause SDL
 		surface = IMG_Load(imageName.c_str());	//Loads the surface from the file
 
 		if (!surface) {
@@ -40,7 +35,7 @@ public:
 	}
 
 	//Converts a surface to a texture
-	int surfaceToTexture(SDL_Surface*& surface, SDL_Texture*& texture) {	//These need to use pointer references cause SDL
+	static int surfaceToTexture(SDL_Surface*& surface, SDL_Texture*& texture) {	//These need to use pointer references cause SDL
 		texture = SDL_CreateTextureFromSurface(renderer, surface);
 
 		if (texture == NULL) {
@@ -51,7 +46,7 @@ public:
 	}
 
 	//Loads an Image to a Texture
-	int loadImageToTexture(SDL_Texture*& texture, std::string imageName) {	//These need to use pointer references cause SDL
+	static int loadImageToTexture(SDL_Texture*& texture, std::string imageName) {	//These need to use pointer references cause SDL
 		SDL_Surface* tempSurface = nullptr;
 		
 		if (loadImageToSurface(tempSurface, imageName)) {
@@ -67,28 +62,28 @@ public:
 	}
 
 	//renders the texture to a specific part of the screen
-	void renderTexture(SDL_Texture* texture, SDL_FRect* renderRect) {
+	static void renderTexture(SDL_Texture* texture, SDL_FRect* renderRect) {
 		SDL_RenderCopyF(renderer, texture, NULL, renderRect);	//Renders the image
 	}
 
 	//Renders the Texture With an Angle
 	//	Angle is in degrees!
-	void renderTextureWithAngle(SDL_Texture* texture, SDL_FRect* renderRect, double angle) {
+	static void renderTextureWithAngle(SDL_Texture* texture, SDL_FRect* renderRect, double angle) {
 		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, NULL, SDL_FLIP_NONE); 
 	}
 
 	//Renders the Texture with an Angle about an Axis
-	void renderTextureWithAngleAroundAxis(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture) {
+	static void renderTextureWithAngleAroundAxis(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture) {
 		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, pointOnTexture, SDL_FLIP_NONE);
 	}
 
 	//Renders the Texture with a Flip applied
-	void renderTextureWithFlip(SDL_Texture* texture, SDL_FRect* renderRect, SDL_RendererFlip flipType) {
+	static void renderTextureWithFlip(SDL_Texture* texture, SDL_FRect* renderRect, SDL_RendererFlip flipType) {
 		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, 0, NULL, flipType);
 	}
 
 	//With all commands
-	void renderTextureEx(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture, SDL_RendererFlip flipType) {
+	static void renderTextureEx(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture, SDL_RendererFlip flipType) {
 		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, pointOnTexture, flipType);
 	}
 

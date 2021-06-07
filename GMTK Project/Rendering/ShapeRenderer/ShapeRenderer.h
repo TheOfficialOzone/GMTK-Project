@@ -24,10 +24,10 @@ struct Line {
 
 class ShapeRenderer {
 private:
-	SDL_Color renderColour;	//The Colour objects will be rendered at
-	SDL_Renderer* renderer;	//What renderer we are refering to
+	static SDL_Color renderColour;	//The Colour objects will be rendered at
+	static SDL_Renderer* renderer;	//What renderer we are refering to
 
-	bool fill;	//If it is filled or not
+	static bool fill;	//If it is filled or not
 public:
 	//Constructor enter the values you want
 	ShapeRenderer(SDL_Renderer* newRenderer, SDL_Color newColour) {
@@ -48,7 +48,7 @@ public:
 	}
 
 	///	Shape Conversion
-	SDL_FPoint* linesToPoints(Line** lines, int amount) {
+	static SDL_FPoint* linesToPoints(Line** lines, int amount) {
 		SDL_FPoint* points = new SDL_FPoint[amount + 1];
 
 		points[0].x = lines[0]->point1.x;	//Gets the first point
@@ -64,24 +64,24 @@ public:
 	}
 
 	//Colors!
-	void setColour(SDL_Color newColour) {
+	static void setColour(SDL_Color newColour) {
 		renderColour = newColour; 
 		SDL_SetRenderDrawColor(renderer, renderColour.r, renderColour.g, renderColour.b, renderColour.a); 
 	}
-	SDL_Color getColour() { return renderColour; }
+	static SDL_Color getColour() { return renderColour; }
 
 	//Renderer
-	void setRenderer(SDL_Renderer* newRenderer) { renderer = newRenderer; }
-	SDL_Renderer* getRenderer() { return renderer; }
+	static void setRenderer(SDL_Renderer* newRenderer) { renderer = newRenderer; }
+	static SDL_Renderer* getRenderer() { return renderer; }
 
 	//Filling
-	void fillEnable() { fill = true; }
-	void fillDisable() { fill = false; }
+	static void fillEnable() { fill = true; }
+	static void fillDisable() { fill = false; }
 
 	////	Shape Drawing
 
 	//Rect
-	void renderRect(SDL_FRect* drawRect) {
+	static void renderRect(SDL_FRect* drawRect) {
 		if (fill)
 			SDL_RenderFillRectF(renderer, drawRect);
 		else
@@ -89,14 +89,14 @@ public:
 	}
 
 	//Lines
-	void renderLine(Line* drawLine) { SDL_RenderDrawLineF(renderer, drawLine->point1.x, drawLine->point1.y, drawLine->point2.x, drawLine->point2.y); }
-	void renderLines(Line** drawLines, int amount) {
+	static void renderLine(Line* drawLine) { SDL_RenderDrawLineF(renderer, drawLine->point1.x, drawLine->point1.y, drawLine->point2.x, drawLine->point2.y); }
+	static void renderLines(Line** drawLines, int amount) {
 		SDL_RenderDrawLinesF(renderer, linesToPoints(drawLines, amount), amount + 1);
 	}
 
 	//Point
-	void renderPoint(SDL_FPoint* drawPoint) { SDL_RenderDrawPointF(renderer, drawPoint->x, drawPoint->y); }
-	void renderPoints(SDL_FPoint* drawPoints, int amount) { SDL_RenderDrawPointsF(renderer, drawPoints, amount); }
+	static void renderPoint(SDL_FPoint* drawPoint) { SDL_RenderDrawPointF(renderer, drawPoint->x, drawPoint->y); }
+	static void renderPoints(SDL_FPoint* drawPoints, int amount) { SDL_RenderDrawPointsF(renderer, drawPoints, amount); }
 
 };
 

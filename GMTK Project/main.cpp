@@ -27,13 +27,13 @@ int main() {
 
 
 	ShapeRenderer* shapeRender = new ShapeRenderer(myRenderer);
-	GraphicRenderer* graphicRenderer = new GraphicRenderer(myRenderer);
+	GraphicRenderer::setRenderer(myRenderer);
 
 	SDL_Texture* testTexture = nullptr;	//C++ gets mad if you don't set it to something
 	SDL_Surface* testSurface = nullptr;
 	std::string testString = "Images/test.png";
 
-	graphicRenderer->loadImageToTexture(testTexture, testString);
+	GraphicRenderer::loadImageToTexture(testTexture, testString);
 
 	SDL_FRect* testRect = new SDL_FRect();
 	testRect->x = 10;
@@ -42,7 +42,7 @@ int main() {
 	testRect->h = 200;
 
 	SDL_FRect* testRect2 = new SDL_FRect();
-	testRect2->x = 300;
+	testRect2->x = 300; 
 	testRect2->y = 10;
 	testRect2->w = 200;
 	testRect2->h = 200;
@@ -58,12 +58,13 @@ int main() {
 	if (!music)
 		std::cout << printf("Mix_LoadMUS(\"Music/Soda City Funk.mp3\"): %s\n", Mix_GetError());
 
-	Mix_PlayMusic(music, 1);
+	//Mix_PlayMusic(music, 1);
 	//End of audio Testing
 	while (1) {
 		SDL_PumpEvents();
-		graphicRenderer->renderTextureWithAngle(testTexture, testRect2, 180);
-		graphicRenderer->renderTextureWithFlip(testTexture, testRect, SDL_FLIP_NONE);
+		GraphicRenderer::renderTextureWithAngle(testTexture, testRect2, 180);
+		GraphicRenderer::renderTextureWithFlip(testTexture, testRect, SDL_FLIP_NONE);
+		ShapeRenderer::renderRect(testRect);
 		SDL_RenderPresent(myRenderer);
 	}
 	
