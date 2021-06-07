@@ -155,9 +155,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Music\MusicHelper\MusicHelper.cpp" />
     <ClCompile Include="Rendering\RendererStaticFix.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Music\MusicHelper\MusicHelper.h" />
     <ClInclude Include="Rendering\GraphicRenderer\GraphicRenderer.h" />
     <ClInclude Include="Rendering\ShapeRenderer\ShapeRenderer.h" />
   </ItemGroup>

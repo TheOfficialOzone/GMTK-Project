@@ -30,7 +30,6 @@ public:
 			std::cout << imageName << " surface failed to load "<< IMG_GetError() << " \n";
 			return -1;
 		}
-		std::cout << "surface loaded \n";
 		return 1;
 	}
 
@@ -86,10 +85,6 @@ public:
 	static void renderTextureEx(SDL_Texture* texture, SDL_FRect* renderRect, double angle, SDL_FPoint* pointOnTexture, SDL_RendererFlip flipType) {
 		SDL_RenderCopyExF(renderer, texture, NULL, renderRect, angle, pointOnTexture, flipType);
 	}
-
 };
-
-
-
 
 #endif

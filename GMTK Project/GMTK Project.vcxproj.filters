@@ -21,12 +21,18 @@
     <ClCompile Include="Rendering\RendererStaticFix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Music\MusicHelper\MusicHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\ShapeRenderer\ShapeRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\GraphicRenderer\GraphicRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Music\MusicHelper\MusicHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
