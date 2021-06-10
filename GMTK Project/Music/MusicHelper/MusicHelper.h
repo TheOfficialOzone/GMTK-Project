@@ -30,6 +30,7 @@ public:
 			printf("Mix_PlayChannel: %s\n", Mix_GetError());
 			return -1;	//Returns -1 on failure
 		}
+
 		//Adds the audio to the list
 		audio.push_back(song);
 		return 1;	//Returns 1 on success
@@ -40,11 +41,7 @@ public:
 		Mix_Music* song = Mix_LoadMUS(file.c_str());
 		
 		if (getMusicPlaying()) {
-			std::cout << "Cutting off song \n";
-			
-			Mix_Music* deleteSong = music.at(0);
-			music.erase(music.begin());
-			Mix_FreeMusic(deleteSong);
+			deleteMusic();
 		}
 
 		if (!song)
@@ -58,10 +55,22 @@ public:
 		return 1;	//Returns 1 on success
 	}
 
-
+	//Return true if already playing music
 	static bool getMusicPlaying() { return Mix_PlayingMusic(); }
+
+	static void deleteMusic() { 
+		std::cout << "Deleting song \n";
+		Mix_Music* song = music.at(0);
+		music.erase(music.begin()); 
+		Mix_FreeMusic(song);
+	}
+
 	//Sets the volume for all the music chunks
 	static void setVolume(float percent) { Mix_Volume(-1, MIX_MAX_VOLUME * percent); }
+
+	static Mix_Music* getLastMusic() {
+		return music.at(0);
+	}
 
 };
 
