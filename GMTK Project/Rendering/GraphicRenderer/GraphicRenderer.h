@@ -38,7 +38,7 @@ public:
 		texture = SDL_CreateTextureFromSurface(renderer, surface);
 
 		if (texture == NULL) {
-			std::cout << " texture failed to load \n";
+			std::cout << " texture failed to load " << SDL_GetError() <<  "\n";
 			return -1;
 		}
 		return 1;

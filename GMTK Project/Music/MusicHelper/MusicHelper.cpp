@@ -16,7 +16,7 @@ void channelDone(int channel) {
 	Mix_FreeChunk(doneChunk);	//Deleted the chunk
 }
 
+//Deletes the music when it is done
 void musicDone() {
-	//Mix_Music* song;
-	//Mix_FreeMusic(song);	//Deletes the Music
+	MusicHelper::deleteMusic();
 }

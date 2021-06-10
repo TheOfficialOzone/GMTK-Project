@@ -35,5 +35,8 @@
     <ClInclude Include="Music\MusicHelper\MusicHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MenuManager\MenuManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
