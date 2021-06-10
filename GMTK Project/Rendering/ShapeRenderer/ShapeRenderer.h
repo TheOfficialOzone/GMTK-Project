@@ -29,6 +29,24 @@ private:
 
 	static bool fill;	//If it is filled or not
 public:
+	//Constructor enter the values you want
+	ShapeRenderer(SDL_Renderer* newRenderer, SDL_Color newColour) {
+		setRenderer(newRenderer);
+		setColour(newColour);
+	}
+
+	//Defaults the Color to white
+	ShapeRenderer(SDL_Renderer* newRenderer) {
+		setRenderer(newRenderer);
+
+		SDL_Color newColour;
+		newColour.r = 255;
+		newColour.g = 255;
+		newColour.b = 255;
+		newColour.a = SDL_ALPHA_OPAQUE;
+		setColour(newColour);
+	}
+
 	///	Shape Conversion
 	static SDL_FPoint* linesToPoints(Line** lines, int amount) {
 		SDL_FPoint* points = new SDL_FPoint[amount + 1];
@@ -51,7 +69,6 @@ public:
 		SDL_SetRenderDrawColor(renderer, renderColour.r, renderColour.g, renderColour.b, renderColour.a); 
 	}
 	static SDL_Color getColour() { return renderColour; }
-	static void resetColour() { SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);  }
 
 	//Renderer
 	static void setRenderer(SDL_Renderer* newRenderer) { renderer = newRenderer; }
@@ -62,18 +79,13 @@ public:
 	static void fillDisable() { fill = false; }
 
 	////	Shape Drawing
+
 	//Rect
 	static void renderRect(SDL_FRect* drawRect) {
 		if (fill)
 			SDL_RenderFillRectF(renderer, drawRect);
 		else
 			SDL_RenderDrawRectF(renderer, drawRect);
-	}
-	static void renderRects(SDL_FRect*& drawRect, int amount) {
-		if (fill)
-			SDL_RenderFillRectsF(renderer, drawRect, amount);
-		else 
-			SDL_RenderDrawRectsF(renderer, drawRect, amount);
 	}
 
 	//Lines
@@ -85,6 +97,7 @@ public:
 	//Point
 	static void renderPoint(SDL_FPoint* drawPoint) { SDL_RenderDrawPointF(renderer, drawPoint->x, drawPoint->y); }
 	static void renderPoints(SDL_FPoint* drawPoints, int amount) { SDL_RenderDrawPointsF(renderer, drawPoints, amount); }
+
 };
 
 #endif

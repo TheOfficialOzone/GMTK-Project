@@ -88,13 +88,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\GMTK Project;$(SolutionDir)\Dependencies\SDL_Mixer\include;$(SolutionDir)\Dependencies\SDL2\include;$(SolutionDir)\Dependencies\SDL_Image\include;$(SolutionDir)\Dependencies\SDL_Ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\GMTK Project;$(SolutionDir)\Dependencies\SDL_Mixer\include;$(SolutionDir)\Dependencies\SDL2\include;$(SolutionDir)\Dependencies\SDL_Image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)/dll;$(SolutionDir)\Dependencies\SDL2\lib;$(SolutionDir)\Dependencies\SDL_Mixer\lib\x86;$(SolutionDir)\Dependencies\SDL_Image\lib;$(SolutionDir)\Dependencies\SDL_Ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/dll;$(SolutionDir)\Dependencies\SDL2\lib;$(SolutionDir)\Dependencies\SDL_Mixer\lib\x86;$(SolutionDir)\Dependencies\SDL_Image\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)"\dll\*.DLL "$(TargetDir)" /D /K /Y</Command>
@@ -111,15 +111,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\GMTK Project;$(SolutionDir)\Dependencies\SDL_Mixer\include;$(SolutionDir)\Dependencies\SDL2\include;$(SolutionDir)\Dependencies\SDL_Image\include;$(SolutionDir)\Dependencies\SDL_Ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\GMTK Project;$(SolutionDir)\Dependencies\SDL_Mixer\include;$(SolutionDir)\Dependencies\SDL2\include;$(SolutionDir)\Dependencies\SDL_Image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/dll;$(SolutionDir)\Dependencies\SDL2\lib;$(SolutionDir)\Dependencies\SDL_Mixer\lib\x86;$(SolutionDir)\Dependencies\SDL_Image\lib;$(SolutionDir)\Dependencies\SDL_Ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/dll;$(SolutionDir)\Dependencies\SDL2\lib;$(SolutionDir)\Dependencies\SDL_Mixer\lib\x86;$(SolutionDir)\Dependencies\SDL_Image\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)"\dll\*.DLL "$(TargetDir)" /D /K /Y</Command>
@@ -159,7 +159,6 @@
     <ClCompile Include="Rendering\RendererStaticFix.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MenuManager\MenuManager.h" />
     <ClInclude Include="Music\MusicHelper\MusicHelper.h" />
     <ClInclude Include="Rendering\GraphicRenderer\GraphicRenderer.h" />
     <ClInclude Include="Rendering\ShapeRenderer\ShapeRenderer.h" />
