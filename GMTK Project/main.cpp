@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <filesystem>
 
 #include "SDL2/SDL.h"	//SDL
 #undef main
@@ -75,9 +76,6 @@ int main() {
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 10);
 	Mix_Volume(-1, MIX_MAX_VOLUME / 10);
 
-	MusicHelper::loadAndPlayMusic("Music/Soda City Funk.mp3");
-	MusicHelper::loadAndPlayMusic("Music/Soda City Funk.mp3");
-	MusicHelper::loadAndPlayMusic("Music/dolphin.wav");
 	MusicHelper::loadAndPlayChunk("Music/dog_growl3.wav", -1);
 	MusicHelper::loadAndPlayChunk("Music/dolphin.wav", -1);
 
@@ -97,11 +95,9 @@ int main() {
 	TTF_Font* Sans = TTF_OpenFont("Fonts/OpenSans-Regular.ttf", 15);
 
 	SDL_Surface* surf = TTF_RenderText_Solid(Sans, "GAmers", white);
-	std::cout << SDL_GetError();
 	SDL_Texture* myTexture;
 	GraphicRenderer::surfaceToTexture(surf, myTexture);
 	//End of Text Testing
-
 
 	bool hasRun = false;
 	while (1) {
