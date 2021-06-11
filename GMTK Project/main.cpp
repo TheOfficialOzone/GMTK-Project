@@ -1,9 +1,9 @@
 
 #include <iostream>
-#include <filesystem>
 
 #include "SDL2/SDL.h"	//SDL
 #undef main
+#include "Globals.h"
 
 #include "SDL_image.h"	//For loading images
 #include "SDL_mixer.h"	//Loading Audio
@@ -11,12 +11,32 @@
 
 
 #include "Music/MusicHelper/MusicHelper.h"
-
 #include "MenuManager/MenuManager.h"
 
 #include "Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "Rendering/GraphicRenderer/GraphicRenderer.h"
 
+#include "Screens/TitleScreen.h"	//For loading the title screen
+
+#include "Board/Board.h"
+#include "MouseController/MouseController.h"
+
+
+static int resizingEventWatcher(void* data, SDL_Event* event) {
+	if (event->type == SDL_WINDOWEVENT &&
+		event->window.event == SDL_WINDOWEVENT_RESIZED) {
+		InteractManager::updateInteractables();
+		InteractManager::renderInteractables();
+		SDL_RenderPresent(globalRenderer);
+	}
+	return 0;
+}
+
+/*
+	Chess with 2 connected pieces
+		- 
+
+*/
 
 int main() {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)	//Initialize SDL
@@ -32,18 +52,33 @@ int main() {
 
 	if (TTF_Init() == -1)
 		std::cout << "SDL_TTF Not Initialized \n";
+
 	SDL_Window* myWindow = SDL_CreateWindow("GMTK Project 2021", 0, 100, 500, 500, SDL_WINDOW_RESIZABLE);
 	SDL_Renderer* myRenderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED);
 
+	globalWindow = myWindow;
+	globalRenderer = myRenderer;
 
-	ShapeRenderer::setRenderer(myRenderer);
-	SDL_Color white;
 	white.r = 255;
 	white.g = 255;
 	white.b = 255;
 	white.a = 255;
+
+	black.r = 0;
+	black.g = 0;
+	black.b = 0;
+	black.a = 255;
+
+	red.r = 255;
+	red.g = 100;
+	red.b = 100;
+	red.a = 255;
+
+	ShapeRenderer::setRenderer(myRenderer);
 	ShapeRenderer::setColour(white);
 
+	//Watches for window size changes
+	SDL_AddEventWatch(resizingEventWatcher, nullptr);
 
 	GraphicRenderer::setRenderer(myRenderer);
 
@@ -65,6 +100,12 @@ int main() {
 	testRect2->w = 200;
 	testRect2->h = 200;
 
+	SDL_FRect* percentRect = new SDL_FRect();
+	percentRect->x = 0.5;
+	percentRect->y = 0.5;
+	percentRect->w = 0.5;
+	percentRect->h = 0.5;
+
 
 	//Testing Audio Garbage
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
@@ -81,36 +122,55 @@ int main() {
 
 	Mix_ChannelFinished(channelDone);
 	Mix_HookMusicFinished(musicDone);
-	
-	//End of audio Testing
+	//End of Audio Testing
 
 	//Interactable Testing
-	InteractManager* manager = new InteractManager();
-	Interactable* testInteract = new Interactable(print, testRect2);
-	manager->addInteractable(testInteract);
+	Interactable* testInteract = new Interactable(nullptr, percentRect);
 
+	InteractManager::setWindow(myWindow);
+	InteractManager::addInteractable(testInteract);
 	//End of Interactable Testing
 
 	//Text Testing
-	TTF_Font* Sans = TTF_OpenFont("Fonts/OpenSans-Regular.ttf", 15);
-
-	SDL_Surface* surf = TTF_RenderText_Solid(Sans, "GAmers", white);
-	SDL_Texture* myTexture;
-	GraphicRenderer::surfaceToTexture(surf, myTexture);
+	TTF_Font* Sans = TTF_OpenFont("Fonts/FFFFORWA.ttf", 150);
+	ShapeRenderer::setFont(Sans);
 	//End of Text Testing
+	loadTitleScreen();
+	//Chess Board 
+	SDL_FRect* chessBoardArea = new SDL_FRect();
+	chessBoardArea->x = 0;
+	chessBoardArea->y = 0;
+	chessBoardArea->w = 1;
+	chessBoardArea->h = 0.5;
+	ChessBoard* myBoard = new ChessBoard(10, 5, chessBoardArea);
 
-	bool hasRun = false;
+	//Piece Testing
+	Piece* myPiece = new Piece(Knight, 2, 2, "Images/chess-Knight.png", nullptr);
+	MouseController::addPiece(myPiece);
+
 	while (1) {
 		SDL_PumpEvents();
-		//GraphicRenderer::renderTextureWithAngle(testTexture, testRect2, 180);
-		//GraphicRenderer::renderTextureWithFlip(testTexture, testRect, SDL_FLIP_NONE);
+		ShapeRenderer::setColour(black);
+		SDL_RenderClear(myRenderer);
+		InteractManager::updateInteractables();
+		InteractManager::renderInteractables();
 		
-		GraphicRenderer::renderTexture(myTexture, testRect);
-		manager->renderInteractables();
+
+		ChessBoard::updateRenderArea();
+		ChessBoard::drawBoard();
+		renderValidMoves(myPiece);
+		MouseController::renderPieces();
 		SDL_RenderPresent(myRenderer);
+
+		MouseController::updateInfo();
 
 		SDL_Event event;	//Exits the program
 		SDL_PollEvent(&event);
+		int clickX, clickY;
+		if (SDL_GetMouseState(&clickX, &clickY)) {
+			InteractManager::clickInBounds(clickX, clickY);
+		}
+
 		if (event.type == SDL_QUIT) 
 			break;
 	}

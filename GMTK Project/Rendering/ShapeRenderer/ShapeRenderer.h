@@ -6,6 +6,8 @@
 
 
 #include "SDL2/SDL.h"
+#include "SDL_ttf.h"
+#include "Rendering/GraphicRenderer/GraphicRenderer.h"
 
 //The Line Shape
 struct Line {
@@ -20,15 +22,21 @@ struct Line {
 	SDL_FPoint point2;
 };
 
-
-
 class ShapeRenderer {
 private:
 	static SDL_Color renderColour;	//The Colour objects will be rendered at
 	static SDL_Renderer* renderer;	//What renderer we are refering to
 
 	static bool fill;	//If it is filled or not
+	static TTF_Font* textFont;	//The Font
+	
 public:
+	//Text
+	static void textToTexture(std::string text, SDL_Texture*& myTexture) {
+		SDL_Surface* surf = TTF_RenderText_Solid(textFont, text.c_str(), renderColour);
+		GraphicRenderer::surfaceToTexture(surf, myTexture);
+	}
+
 	///	Shape Conversion
 	static SDL_FPoint* linesToPoints(Line** lines, int amount) {
 		SDL_FPoint* points = new SDL_FPoint[amount + 1];
@@ -44,6 +52,9 @@ public:
 
 		return points;
 	}
+
+	//FONTS!
+	static void setFont(TTF_Font* newFont) { textFont = newFont; }
 
 	//Colors!
 	static void setColour(SDL_Color newColour) {

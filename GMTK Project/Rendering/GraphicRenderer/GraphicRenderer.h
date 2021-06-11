@@ -16,8 +16,9 @@
 class GraphicRenderer {
 private:
 	static SDL_Renderer* renderer;	//What renderer we are refering to
-
+	
 public:
+
 	//Renderer
 	static void setRenderer(SDL_Renderer* newRenderer) { renderer = newRenderer; }
 	static SDL_Renderer* getRenderer() { return renderer; }
