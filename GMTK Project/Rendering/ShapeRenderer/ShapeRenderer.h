@@ -17,6 +17,7 @@ struct Line {
 		point2.x = x2;
 		point2.y = y2;
 	}
+	Line() {}
 
 	SDL_FPoint point1;
 	SDL_FPoint point2;
@@ -35,6 +36,7 @@ public:
 	static void textToTexture(std::string text, SDL_Texture*& myTexture) {
 		SDL_Surface* surf = TTF_RenderText_Solid(textFont, text.c_str(), renderColour);
 		GraphicRenderer::surfaceToTexture(surf, myTexture);
+		SDL_FreeSurface(surf);
 	}
 
 	///	Shape Conversion

@@ -47,7 +47,7 @@ public:
 		if (!song)
 			printf((file + " had an error loading %s \n").c_str(), Mix_GetError());
 
-		if (Mix_PlayMusic(song, 0) == -1) {
+		if (Mix_PlayMusic(song, -1) == -1) {
 			printf("Mix_PlayMusic: %s\n", Mix_GetError());
 			return -1;	//Returns -1 on failure
 		}
@@ -66,7 +66,10 @@ public:
 	}
 
 	//Sets the volume for all the music chunks
-	static void setVolume(float percent) { Mix_Volume(-1, MIX_MAX_VOLUME * percent); }
+	static void setVolume(float percent) { 
+		Mix_VolumeMusic(MIX_MAX_VOLUME * percent);
+		Mix_Volume(-1, MIX_MAX_VOLUME * percent); 
+	}
 
 	static Mix_Music* getLastMusic() {
 		return music.at(0);

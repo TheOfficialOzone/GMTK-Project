@@ -3,11 +3,12 @@
 #include <vector>
 #include <algorithm>
 
-#include "Globals.h"
+#include "Globals/Globals.h"
 #include "Piece.h"
 #include "Board/Board.h"
 #include "Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "MouseController/MouseController.h"
+#include "Music/MusicHelper/MusicHelper.h"
 
 /*
 	This is the flow for how the piece picking up works:
@@ -27,8 +28,9 @@ void renderValidMoves(Piece* p) {
 		ChessBoard::getCoords(x, y, possibleMoves->at(i));
 		SDL_FRect* renderRect = ChessBoard::getCellRenderArea(x, y);
 
-		ShapeRenderer::setColour(red);
+		ShapeRenderer::setColour(light_blue);
 		ShapeRenderer::renderRect(renderRect);
+		delete renderRect;
 	}
 }
 
@@ -43,7 +45,7 @@ void dropPiece() {
 	int y;
 	MouseController::getMousePosition(x, y);
 	if (MouseController::getHeldPiece() != nullptr) {
-		std::vector<int>* moves = getValidMoves(MouseController::getPiece());
+		std::vector<int>* moves = getValidMoves(MouseController::getHeldPiece());
 		if (ChessBoard::mouseToBoard(x, y)) { // converts x and y to board indeces as well as does the check
 			int index = ChessBoard::getIndex(x, y);
 			if (std::find(moves->begin(), moves->end(), index) != moves->end()) {	//IF it's in the vector
@@ -53,23 +55,52 @@ void dropPiece() {
 				destination->setPiece(MouseController::getHeldPiece());
 				MouseController::getHeldPiece()->setX(x);
 				MouseController::getHeldPiece()->setY(y);
+
+				std::string mySTR = "Music/PiecePlace";
+				mySTR += std::to_string(rand() % 2 + 1);
+				mySTR += ".mp3";
+				MusicHelper::loadAndPlayChunk(mySTR, -1);
 			}
 		}
 	}
 	MouseController::setHeldPiece(nullptr);
 }
 
+
+bool isWithinDistance(int x, int y, Piece* p) {
+	std::vector<Piece*>* pieces = MouseController::getPieces();
+	Cell* current = ChessBoard::getCell(x, y);
+
+	for (int i = 0; i < pieces->size(); i++) {
+		if(p == pieces->at(i)) {
+			if(i > 0) {
+				Cell* other = ChessBoard::getCell(pieces->at(i - 1)->getX(), pieces->at(i - 1)->getY());
+				if(Cell::distBetweenCells(current, other) > distance) {
+					return false;
+				}
+			}
+			if(i < pieces->size() - 1) {
+				Cell* other = ChessBoard::getCell(pieces->at(i + 1)->getX(), pieces->at(i + 1)->getY());
+				if(Cell::distBetweenCells(current, other) > distance) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 // STEP 2.5 the actual checking on the move
-bool isValid(int startX, int startY, int tempX, int tempY) {
+bool isValid(int startX, int startY, int tempX, int tempY, Piece* p) {
 	if (ChessBoard::positionInBounds(tempX, tempY)) {
 		Cell* origin = ChessBoard::getCell(startX, startY);
 		Cell* destination = ChessBoard::getCell(tempX, tempY);
 		if (destination->isEmpty()) {
-			if (Cell::distBetweenCells(origin, destination) <= distance) {
-				return true;
-			}
+			return (isWithinDistance(tempX, tempY, p));
 		}
 	}
+	return false;
 }
 // STEP 2: CHECKS VALID MOVES 
 // THIS RETURNS AN INT[] THAT HOLDS INDICES IN THE BOARD WHERE THE PIECE CAN MOVE TO
@@ -92,44 +123,44 @@ std::vector<int>* getValidMoves(Piece* p) {
 					int j = 3 - abs(i);
 					int tempX = x + i;
 					int tempY = y + j;
-					if (isValid(x, y, tempX, tempY)) {
+					if (isValid(x, y, tempX, tempY, p)) {
 						moves->push_back(ChessBoard::getIndex(tempX, tempY));
 					}
 					tempY = y - j;
-					if (isValid(x, y, tempX, tempY)) {
+					if (isValid(x, y, tempX, tempY, p)) {
 						moves->push_back(ChessBoard::getIndex(tempX, tempY));
 					}
 				}
 			}
 			break;
 		case Bishop:
-			for(int k = 1; k < distance; k++) {
-				if(isValid(x, y, x + k, y + k)) {
+			for(int k = 1; k < distance * 2; k++) {
+				if(isValid(x, y, x + k, y + k, p)) {
 					moves->push_back(ChessBoard::getIndex(x + k, y + k));
 				}
-				if(isValid(x, y, x - k, y + k)) {
+				if(isValid(x, y, x - k, y + k, p)) {
 					moves->push_back(ChessBoard::getIndex(x - k, y + k));
 				}
-				if(isValid(x, y, x + k, y - k)) {
+				if(isValid(x, y, x + k, y - k, p)) {
 					moves->push_back(ChessBoard::getIndex(x + k, y - k));
 				}
-				if(isValid(x, y, x - k, y - k)) {
+				if(isValid(x, y, x - k, y - k, p)) {
 					moves->push_back(ChessBoard::getIndex(x - k, y - k));
 				}
 			}
 			break;
 		case Rook:
 			for(int k = 1; k < distance; k++) {
-				if(isValid(x, y, x + k, y)) {
+				if(isValid(x, y, x + k, y, p)) {
 					moves->push_back(ChessBoard::getIndex(x + k, y));
 				}
-				if(isValid(x, y, x - k, y)) {
+				if(isValid(x, y, x - k, y, p)) {
 					moves->push_back(ChessBoard::getIndex(x - k, y));
 				}
-				if(isValid(x, y, x, y - k)) {
-					moves->push_back(ChessBoard::getIndex(x, y - k));
+				if(isValid(x, y, x, y + k, p)) {
+					moves->push_back(ChessBoard::getIndex(x, y + k));
 				}
-				if(isValid(x, y, x, y - k)) {
+				if(isValid(x, y, x, y - k, p)) {
 					moves->push_back(ChessBoard::getIndex(x, y - k));
 				}
 			}
@@ -150,7 +181,6 @@ void pickupPiece() {
 		MouseController::getMousePosition(mouseX, mouseY);
 		if (ChessBoard::mouseToBoard(mouseX, mouseY)) {
 			Cell* current = ChessBoard::getCell(mouseX, mouseY);
-			std::cout << mouseX << " " << mouseY << std::endl;
 			if (current->getPiece() != nullptr) {
 				MouseController::setHeldPiece(current->getPiece());
 			}

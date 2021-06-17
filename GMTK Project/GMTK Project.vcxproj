@@ -92,7 +92,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/dll;$(SolutionDir)\Dependencies\SDL2\lib;$(SolutionDir)\Dependencies\SDL_Mixer\lib\x86;$(SolutionDir)\Dependencies\SDL_Image\lib;$(SolutionDir)\Dependencies\SDL_Ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -116,7 +116,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -135,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -149,7 +149,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,15 +157,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board\Board.cpp" />
+    <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MouseController\MouseController.cpp" />
     <ClCompile Include="Music\MusicHelper\MusicHelper.cpp" />
     <ClCompile Include="Piece\Piece.cpp" />
     <ClCompile Include="Rendering\RendererStaticFix.cpp" />
-    <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Globals\Globals.cpp" />
+    <ClCompile Include="Screens\GameScreen.cpp" />
+    <ClCompile Include="Screens\TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board\Board.h" />
+    <ClInclude Include="Level\Level.h" />
     <ClInclude Include="MenuManager\MenuManager.h" />
     <ClInclude Include="MouseController\MouseController.h" />
     <ClInclude Include="Music\MusicHelper\MusicHelper.h" />
@@ -173,8 +177,11 @@
     <ClInclude Include="Rendering\GraphicRenderer\GraphicRenderer.h" />
     <ClInclude Include="Rendering\ShapeRenderer\ShapeRenderer.h" />
     <ClInclude Include="Screens\GameScreen.h" />
-    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Globals\Globals.h" />
     <ClInclude Include="Screens\TitleScreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Level\level.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
